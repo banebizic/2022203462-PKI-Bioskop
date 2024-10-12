@@ -1,20 +1,48 @@
-<div *ngIf="recomended" class="container">
+<div *ngIf="movies" class="container">
     <p>sadasds</p>
-    <mat-card class="example-card" appearance="outlined" *ngFor="let movie of recomended">
+    <mat-card class="example-card" appearance="outlined" *ngFor="let movie of movies.slice(0, 3)">
         <mat-card-header>
-            <div mat-card-avatar class="example-header-image"></div>
+            <div mat-card-avatar class="example-header-image" style="background-image:url('{{movie.photo}}')"></div>
             <mat-card-title class="whiteText">{{movie.naziv}}</mat-card-title>
             <mat-card-subtitle>Godina izlaska filma: {{movie.datumIzlaska}}</mat-card-subtitle>
         </mat-card-header>
         <img mat-card-image src={{movie.photo}} alt={{movie.naziv}} class="filmCover">
         <mat-card-content>
-            <p class="whiteText">
-                {{movie.opis}}
-            </p>
+            <mat-list role="list">
+                <mat-list-item role="listitem">Trajanje: {{movie.trajanje}} minuta</mat-list-item>
+                <mat-list-item role="listitem">Reziser: {{movie.reziser}}</mat-list-item>
+                <mat-list-item role="listitem">Glavni glumci: {{movie.glumci[0]}},{{movie.glumci[1]}}</mat-list-item>
+            </mat-list>
         </mat-card-content>
         <mat-card-actions>
-            <button mat-button>LIKE</button>
-            <button mat-button>SHARE</button>
+            <a mat-button [routerLink]="['/movie/', movie.id]"><i class="fa-solid fa-circle-info"></i> Detaljnije o
+                filmu</a>
+            <a mat-button [routerLink]="['/book/', movie.id]"><i class="fa-solid fa-money-bill-1-wave"></i> Rezervisi
+                kartu</a>
+        </mat-card-actions>
+    </mat-card>
+</div>
+<div class="container search-container">
+    <mat-card appearance="outlined" class="search-card">
+        <mat-card-content>
+            <h1 class="whiteText">Izaberite film</h1>
+            <form class="search-form">
+                <mat-form-field class="search-field">
+                    <mat-label>Izaberite film</mat-label>
+                    <mat-select disableRipple>
+                        <mat-option value="1" *ngFor="let movie of movies">{{movie.naziv}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field class="search-field">
+                    <mat-label>Izaberite zanr</mat-label>
+                    <mat-select disableRipple>
+                        <mat-option value="1" *ngFor="let zanr of zanr">{{zanr}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </form>
+        </mat-card-content>
+        <mat-card-actions>
+            <a mat-button [routerLink]="['/search']"><i class="fa-solid fa-search"></i> Potrazi film</a>
         </mat-card-actions>
     </mat-card>
 </div>

@@ -4,50 +4,41 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { RouterLink } from '@angular/router';
+import { MatListModule } from '@angular/material/list';
+import { MovieModel } from '../models/movie.model';
+import {MatSelectModule} from '@angular/material/select';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [MatCardModule, MatButtonModule, HttpClientModule, NgIf, NgFor,RouterLink],
+  imports: [
+    MatCardModule,
+    MatButtonModule,
+    HttpClientModule,
+    NgIf,
+    NgFor,
+    RouterLink,
+    MatListModule,
+    MatSelectModule],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
-// export class HomeComponent implements OnInit {
-
-//   private client: HttpClient
-//   public recomended: any[] = []
-
-//   constructor(private httpClient: HttpClient){
-//     this.client = httpClient
-//   }
-//   ngOnInit(): void {
-//     const url ='assets/data/spisakFilmova.json'
-//     this.client.get<any>(url, {
-//       headers: {
-//         'Accept': 'application/json'
-//       }
-//     }).subscribe(rsp => this.recomended = rsp.content)
-//   }
-
-// }
 export class HomeComponent implements OnInit {
 
-  public recomended: any[] = []; // Niz koji će sadržati učitane filmove
+  public movies: MovieModel[] = [];
+  public zanr: string[] = ["War", "Drama", "Action"]
 
-  constructor(private httpClient: HttpClient) {}
+  constructor(private httpClient: HttpClient) { }
 
   ngOnInit(): void {
-    const url = 'assets/data/spisakFilmova.json'; // Putanja do JSON fajla
-    this.httpClient.get<any[]>(url, {
+    const url = 'assets/data/spisakFilmova.json';
+    this.httpClient.get<MovieModel[]>(url, {
       headers: {
         'Accept': 'application/json'
       }
     }).subscribe(
       (response) => {
-        this.recomended = response; // Učitani filmovi
-      },
-      (error) => {
-        console.error('Greška prilikom učitavanja filmova', error);
+        this.movies = response;
       }
     );
   }

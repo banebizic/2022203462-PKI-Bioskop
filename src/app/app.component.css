@@ -6,3 +6,8 @@ mat-toolbar {
     justify-content: space-between;
     background: #004f4f;
 }
+.footer {
+    display: flex;
+    justify-content: center;
+    color: white !important;
+}
