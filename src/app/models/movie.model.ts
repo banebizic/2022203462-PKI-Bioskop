@@ -9,9 +9,9 @@ export interface MovieModel {
     reziser: string
     glumci: string[]
     datumIzlaska: number
-    movieStatus: MovieStatus[]
-    cena: number
-    movieReview: MovieReview[]
+    projekcije: MovieStatus[]
+    
+    recenzije: MovieReview[]
     photo: string
   }
 

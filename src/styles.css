@@ -10,3 +10,42 @@ body {
     font-family: Roboto, "Helvetica Neue", sans-serif;
     background-color: black;
 }
+
+h1,
+h2,
+h3,
+h4,
+h5,
+p {
+    color: white !important;
+}
+
+.example-card {
+    max-width: 400px;
+}
+.example-header-image {
+    background-size: cover;
+}
+.whiteText {
+    color: white !important;
+}
+.container {
+    margin-top: 50px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+}
+.filmCover {
+    width: 100%;
+    height: 200px;
+    object-fit: contain;
+}
+.search-card {
+    width: 800px;
+}
+.search-form {
+    display: flex;
+    justify-content: left;
+    gap: 10px;
+}

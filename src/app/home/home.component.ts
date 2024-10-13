@@ -8,6 +8,8 @@ import { MatListModule } from '@angular/material/list';
 import { MovieModel } from '../models/movie.model';
 import { MatSelectModule } from '@angular/material/select';
 import { MovieService } from '../services/movie.service';
+import { DataService } from '../services/data.service';
+import { SearchContainerComponent } from '../search-container/search-container.component';
 
 @Component({
   selector: 'app-home',
@@ -20,18 +22,24 @@ import { MovieService } from '../services/movie.service';
     NgFor,
     RouterLink,
     MatListModule,
-    MatSelectModule],
+    MatSelectModule,
+    SearchContainerComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
 export class HomeComponent implements OnInit {
 
   private service: MovieService
+  private dataService: DataService
   public movies: MovieModel[] = []
-  public zanr: string[] = ["War", "Drama", "Action"]
+  public zanr: string[] = []
+  public cena: number[] = []
 
   constructor() {
     this.service = new MovieService
+    this.dataService = new DataService
+    this.zanr = this.dataService.getZanr()
+    this.cena = this.dataService.getCena()
   }
 
   ngOnInit(): void {

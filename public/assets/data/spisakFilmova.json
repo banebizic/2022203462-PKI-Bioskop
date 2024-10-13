@@ -10,7 +10,7 @@
         "datumIzlaska": 1979,
         "projekcije": [
             {"datum": "2023-10-10T20:00:00Z", "cena": 1000, "status": ""},
-            {"datum": "2023-10-11T20:00:00Z", "cena": 1000, "status": ""}
+            {"datum": "2023-10-12T18:00:00Z", "cena": 1000, "status": ""}
         ],
         "recenzije": [
             {"korisnik": "Korisnik 1", "ocena": 5, "komentar": "Sjajan film!"},
