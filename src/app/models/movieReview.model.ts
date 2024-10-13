@@ -1,4 +1,4 @@
 export interface MovieReview {
-  korisnik: number;
-  komentar: string;
+  korisnik: number
+  komentar: string
   }

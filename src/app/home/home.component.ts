@@ -1,12 +1,13 @@
 import { NgFor, NgIf } from '@angular/common';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { HttpClientModule } from '@angular/common/http';
+import { Component, OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { RouterLink } from '@angular/router';
 import { MatListModule } from '@angular/material/list';
 import { MovieModel } from '../models/movie.model';
-import {MatSelectModule} from '@angular/material/select';
+import { MatSelectModule } from '@angular/material/select';
+import { MovieService } from '../services/movie.service';
 
 @Component({
   selector: 'app-home',
@@ -25,20 +26,18 @@ import {MatSelectModule} from '@angular/material/select';
 })
 export class HomeComponent implements OnInit {
 
-  public movies: MovieModel[] = [];
+  private service: MovieService
+  public movies: MovieModel[] = []
   public zanr: string[] = ["War", "Drama", "Action"]
 
-  constructor(private httpClient: HttpClient) { }
+  constructor() {
+    this.service = new MovieService
+  }
 
   ngOnInit(): void {
-    const url = 'assets/data/spisakFilmova.json';
-    this.httpClient.get<MovieModel[]>(url, {
-      headers: {
-        'Accept': 'application/json'
-      }
-    }).subscribe(
+    this.service.getMovies().subscribe(
       (response) => {
-        this.movies = response;
+        this.movies = response
       }
     );
   }
