@@ -3,10 +3,10 @@ import { HttpClientModule } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-import { RouterLink } from '@angular/router';
 import { MatListModule } from '@angular/material/list';
 import { MatSelectModule } from '@angular/material/select';
 import { MovieModel } from '../models/movie.model';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-search-container',
@@ -17,7 +17,6 @@ import { MovieModel } from '../models/movie.model';
     HttpClientModule,
     NgIf,
     NgFor,
-    RouterLink,
     MatListModule,
     MatSelectModule],
   templateUrl: './search-container.component.html',
@@ -28,4 +27,16 @@ export class SearchContainerComponent {
   @Input() movies: MovieModel[] | undefined
   @Input() zanr: string[] | undefined
   @Input() cena: number[] | undefined
+
+  constructor(
+    private router: Router,
+    private activeRoute: ActivatedRoute
+  ) {}
+
+  public doSearch() {
+    if (this.router.url != "/search") {
+      this.router.navigate(['/search'], { relativeTo: this.activeRoute })
+      return
+    }
+  }
 }
