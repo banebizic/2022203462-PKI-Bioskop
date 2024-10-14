@@ -28,6 +28,10 @@ export class SearchContainerComponent {
   @Input() zanr: string[] | undefined
   @Input() cena: number[] | undefined
 
+  public sNaziv: string | null = null
+  public sZanr: string | null = null
+  public sCena: number | null = null
+
   constructor(
     private router: Router,
     private activeRoute: ActivatedRoute
@@ -36,7 +40,8 @@ export class SearchContainerComponent {
   public doSearch() {
     if (this.router.url != "/search") {
       this.router.navigate(['/search'], { relativeTo: this.activeRoute })
-      return
     }
+
+    console.log(this.sNaziv, this.sZanr, this.sCena)
   }
 }

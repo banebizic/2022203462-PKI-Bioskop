@@ -1,6 +1,6 @@
-<app-search-container [movies]="movies" [zanr]="zanr" [cena]="cena"/> 
+<!-- <app-search-container [movies]="movies" [zanr]="zanr" [cena]="cena"/>  -->
 <div *ngIf="movies" class="container">
-    <mat-card class="example-card" appearance="outlined" *ngFor="let movie of movies.slice(0, 4)">
+    <mat-card class="example-card" appearance="outlined" *ngFor="let movie of movies.slice(0, 10)">
         <mat-card-header>
             <div mat-card-avatar class="example-header-image" style="background-image:url('{{movie.photo}}')"></div>
             <mat-card-title class="whiteText">{{movie.naziv}}</mat-card-title>
