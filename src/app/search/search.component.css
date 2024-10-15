@@ -13,3 +13,8 @@ table {
     margin-right: auto;
     margin-top: 20px;
 }
+.baciDesno {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+}

@@ -7,14 +7,20 @@ import { map } from 'rxjs';
   providedIn: 'root'
 })
 export class MovieService {
-  private url = '/assets/data/spisakFilmova.json'
+  private static instance: MovieService
 
+  private url = '/assets/data/spisakFilmova.json'
   private movies: MovieModel[] = []
   private client: HttpClient
-  constructor() {
+  private constructor() {
     this.client = inject(HttpClient)
   }
 
+  public static getInstance(): MovieService {
+    if (MovieService.instance == null)
+      MovieService.instance = new MovieService
+    return MovieService.instance
+  }
 
   public getMovies() {
     return this.client.get<MovieModel[]>(this.url, {
@@ -63,5 +69,5 @@ export class MovieService {
       map(movies => movies.filter(movie => movie.projekcije[0].cena === cena))
     );
   }
-  
+
 }

@@ -11,13 +11,13 @@ import { HttpClientModule } from '@angular/common/http';
 import { MatButtonModule } from '@angular/material/button';
 import { MatListModule } from '@angular/material/list';
 import { MatSelectModule } from '@angular/material/select';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-search',
   standalone: true,
   imports: [SearchContainerComponent,
     MatTableModule,
-    MatCardModule,
     NgIf,
     MatCardModule,
     MatButtonModule,
@@ -25,26 +25,28 @@ import { MatSelectModule } from '@angular/material/select';
     NgIf,
     NgFor,
     MatListModule,
-    MatSelectModule
+    MatSelectModule,
+    RouterLink
   ],
   templateUrl: './search.component.html',
   styleUrl: './search.component.css'
 })
-export class SearchComponent implements OnInit {
+export class SearchComponent {
 
   public movies: MovieModel[] = []
-  public zanr: string[] = []
-  public cena: number[] = []
+  public movie: MovieModel | undefined = undefined
+  // public zanr: string[] = []
+  // public cena: number[] = []
 
-  public nazivFilma: string | null = null
-  public zanrFilma: string | null = null
-  public cenaFilma: number | null = null
+  // public nazivFilma: string | null = null
+  // public zanrFilma: string | null = null
+  // public cenaFilma: number | null = null
 
-  public sNaziv: string | null = null
-  public sZanr: string | null = null
-  public sCena: number | null = null
+  // public sNaziv: string | null = null
+  // public sZanr: string | null = null
+  // public sCena: number | null = null
 
-  displayedColumns = ['position', 'name', 'genre', 'price'];
+  displayedColumns = ['position', 'name', 'genre', 'price', 'info', 'book'];
   public dataSource: MatTableDataSource<MovieModel> | null = null
 
   constructor(
@@ -53,59 +55,81 @@ export class SearchComponent implements OnInit {
     private service: MovieService,
     private dataService: DataService,) { }
 
-  ngOnInit(): void {
-    this.activeRoute.queryParams.subscribe(params => {
-      this.nazivFilma = params['naziv']
-      this.zanrFilma = params['zanr']
-      this.cenaFilma = params['cena']
-    })
-    this.service.getMovies().subscribe(
-      (response) => {
-        this.movies = response
-      }
-    )
-    this.zanr = this.dataService.getZanr()
-    this.cena = this.dataService.getCena()
-    // this.service.getMovieByName('Platoon').subscribe(response => {
-    //   if (response) {
-    //     this.dataSource = new MatTableDataSource<MovieModel>([response])
-    //   } else {
-    //     console.log('Film nije pronađen')
-    //   }
-    // })
-    this.service.getMovieByCena(1500).subscribe(response => {
-      if (response && response.length > 0) {
-        this.dataSource = new MatTableDataSource<MovieModel>(response)
-      } else {
-        console.log('Nema filmova za odabrani žanr')
-        this.dataSource = new MatTableDataSource<MovieModel>([])
-      }
-    })
-  }
+  // ngOnInit(): void {
+  //   this.activeRoute.queryParams.subscribe(params => {
+  //     this.nazivFilma = params['naziv']
+  //     this.zanrFilma = params['zanr']
+  //     this.cenaFilma = params['cena']
+  //   })
+  //   this.service.getMovies().subscribe(
+  //     (response) => {
+  //       this.movies = response
+  //     }
+  //   )
+  //   this.zanr = this.dataService.getZanr()
+  //   this.cena = this.dataService.getCena()
+  // }
+
+  // public doSearch() {
+  //   const criteria = this.dataService.getFromSearch()
+  //   const selectedMovieName = criteria.nazivFilma
+  //   const selectedGenre = criteria.zanrFilma
+  //   const selectedPrice = criteria.cenaFilma
+
+  //   // console.log(selectedGenre)
+
+  //   const filteredMovies = this.movies.filter(movie => {
+  //     const matchesName = selectedMovieName ? movie.naziv === selectedMovieName : true;
+  //     const matchesGenre = selectedGenre ? movie.zanr === selectedGenre : true;
+  //     const matchesPrice = selectedPrice ? movie.projekcije[0].cena === selectedPrice : true;
+
+  //     return matchesName && matchesGenre && matchesPrice;
+  //   });
+  //   // console.log(filteredMovies)
+  //   if (filteredMovies.length>0) {
+  //     this.dataSource = new MatTableDataSource<MovieModel>(filteredMovies);
+  //   } else {
+  //     console.log('Film nije pronađen')
+  //   }
+  // }
+
   public doSearch() {
-    const selectedMovieName = this.sNaziv;
-    const selectedGenre = this.sZanr;
-    const selectedPrice = this.sCena;
+    const criteria = this.dataService.getFromSearch();
+    const selectedMovieName = criteria.nazivFilma
+    const selectedGenre = criteria.zanrFilma
+    const selectedPrice = criteria.cenaFilma
 
-    // Prvo filtriramo filmove po ID-ju
+    let movieFound = false
+
     const filteredMovies = this.movies.filter(movie => {
-      const matchesId = selectedMovieName ? movie.naziv === selectedMovieName : true;
-      const matchesGenre = selectedGenre ? movie.zanr === selectedGenre : true;
-      const matchesPrice = selectedPrice ? movie.projekcije[0].cena === selectedPrice : true;
+      const matchesName = selectedMovieName ? movie.naziv === selectedMovieName : true
+      const matchesGenre = selectedGenre ? movie.zanr === selectedGenre : true
+      const matchesPrice = selectedPrice ? movie.projekcije[0].cena === selectedPrice : true
 
-      return matchesId && matchesGenre && matchesPrice;
+      if (matchesName) {movieFound = true}
+      return matchesName || matchesGenre || matchesPrice
     });
 
-    // Postavi dataSource sa filtriranim filmovima
-    this.dataSource = new MatTableDataSource<MovieModel>(filteredMovies);
-    // }
-    //   public doSearch() {
-    //     if (this.router.url != "/search") {
-    //       this.router.navigate(['/search'], { relativeTo: this.activeRoute })
-    //     }
 
-    //     console.log(this.sNaziv, this.sZanr, this.sCena)
-    //   }
-
+    console.log('fileter',filteredMovies)
+   
+    if (filteredMovies.length > 0) {
+      if (movieFound && selectedMovieName) {
+        
+        this.service.getMovieByName(selectedMovieName).subscribe((response) => {
+          this.movie = response
+        })
+      }
+      this.dataSource = new MatTableDataSource<MovieModel>(filteredMovies)
+    } else {
+      console.log('Film nije pronađen')
+      this.service.getMovies().subscribe(
+        (response) => {
+          this.movies = response
+        }
+      )
+      console.log(this.movies);
+      this.dataSource = new MatTableDataSource<MovieModel>(this.movies)
+    }
   }
 }

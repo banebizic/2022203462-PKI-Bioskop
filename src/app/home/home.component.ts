@@ -36,7 +36,7 @@ export class HomeComponent implements OnInit {
   public cena: number[] = []
 
   constructor() {
-    this.service = new MovieService
+    this.service = MovieService.getInstance()
     this.dataService = new DataService
     this.zanr = this.dataService.getZanr()
     this.cena = this.dataService.getCena()
