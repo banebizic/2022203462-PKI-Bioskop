@@ -139,7 +139,6 @@ export class SearchComponent {
           this.movies = response
         }
       )
-      console.log(this.movies);
       this.dataSource = new MatTableDataSource<MovieModel>(this.movies)
     }
   }

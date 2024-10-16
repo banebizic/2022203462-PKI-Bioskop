@@ -19,17 +19,17 @@ export class DataService {
   public getCena(): number[] { return [1000, 1100, 1200, 1300, 1400, 1500] }
 
   public getFromSearch(): SearchModel {
-    if (!localStorage.getItem('search')) {
-      localStorage.setItem('search', JSON.stringify({
+    if (!sessionStorage.getItem('search')) {
+      sessionStorage.setItem('search', JSON.stringify({
         nazivFilma: null,
         zanrFilma: null,
         cenaFilma: null
       }))
     }
-    return JSON.parse(localStorage.getItem('search')!)
+    return JSON.parse(sessionStorage.getItem('search')!)
   }
 
   public saveSearchCriteria(search: SearchModel) {
-    localStorage.setItem('search', JSON.stringify(search))
+    sessionStorage.setItem('search', JSON.stringify(search))
   }
 }

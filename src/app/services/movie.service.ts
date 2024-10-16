@@ -38,6 +38,7 @@ export class MovieService {
     }).pipe(
       map(movies => movies.find(movie => movie.id === id))
     )
+    
   }
 
   public getMovieByName(name: string) {
