@@ -102,16 +102,15 @@ export class SearchComponent {
     let movieFound = false
 
     const filteredMovies = this.movies.filter(movie => {
-      const matchesName = selectedMovieName ? movie.naziv === selectedMovieName : true
-      const matchesGenre = selectedGenre ? movie.zanr === selectedGenre : true
-      const matchesPrice = selectedPrice ? movie.projekcije[0].cena === selectedPrice : true
+      const matchesName = selectedMovieName ? movie.naziv === selectedMovieName : false
+      const matchesGenre = selectedGenre ? movie.zanr === selectedGenre : false
+      const matchesPrice = selectedPrice ? movie.projekcije[0].cena === selectedPrice : false
 
       if (matchesName) {movieFound = true}
+      if (matchesGenre) {movieFound = true}
+      if (matchesPrice) {movieFound = true}
       return matchesName || matchesGenre || matchesPrice
     });
-
-
-    console.log('fileter',filteredMovies)
    
     if (filteredMovies.length > 0) {
       if (movieFound && selectedMovieName) {
@@ -120,9 +119,21 @@ export class SearchComponent {
           this.movie = response
         })
       }
+      if (movieFound && selectedGenre) {
+        
+        this.service.getMovieByZanr(selectedGenre).subscribe((response) => {
+          this.movies = response
+        })
+      }
+      if (movieFound && selectedPrice) {
+        
+        this.service.getMovieByCena(selectedPrice).subscribe((response) => {
+          this.movies = response
+        })
+      }
       this.dataSource = new MatTableDataSource<MovieModel>(filteredMovies)
     } else {
-      console.log('Film nije pronađen')
+      alert('Film nije pronađen')
       this.service.getMovies().subscribe(
         (response) => {
           this.movies = response
